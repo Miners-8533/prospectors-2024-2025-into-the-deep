@@ -23,7 +23,7 @@ public class TeleOp extends LinearOpMode {
             robot2024.setStrafePower(gamepad1.left_stick_x);
 
             double power_modifier = 0.40;
-            robot2024.setShoulderPower(gamepad2.left_stick_y*power_modifier);
+            robot2024.setShoulderPower(gamepad2.left_stick_y);
 
             if (gamepad2.b) {
                 robot2024.closeGripper();

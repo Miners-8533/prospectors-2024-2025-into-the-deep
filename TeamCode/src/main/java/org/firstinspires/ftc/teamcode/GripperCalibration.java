@@ -17,11 +17,11 @@ public class GripperCalibration extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        DcMotor Shoulder_Motor = hardwareMap.dcMotor.get("Shoulder_Motor");
-        Shoulder_Motor.setDirection(DcMotorSimple.Direction.FORWARD);
-        Servo Gripper = hardwareMap.servo.get("Gripper_Servo");
+//        DcMotor Shoulder_Motor = hardwareMap.dcMotor.get("Shoulder_Motor");
+//        Shoulder_Motor.setDirection(DcMotorSimple.Direction.FORWARD);
+//        Servo Gripper = hardwareMap.servo.get("Gripper_Servo");
 
-        Robot2024 robot2024 = new Robot2024(Gripper, Shoulder_Motor);
+        Robot2024 robot2024 = new Robot2024(hardwareMap);
 
         waitForStart();
 
@@ -35,7 +35,7 @@ public class GripperCalibration extends LinearOpMode {
 
             telemetry.addLine("You pressed '" + this.lastPressed + "' last");
             telemetry.addLine("The gripper should be '" + this.expectedState + "'");
-            telemetry.addData("Servo Position", Gripper.getPosition());
+            telemetry.addData("Servo Position", robot2024.gripper.getPosition());
             telemetry.addLine();
 
             telemetry.addData("Servo Close Position", robot2024.gripper_close_position);
@@ -63,6 +63,16 @@ public class GripperCalibration extends LinearOpMode {
                 robot2024.openGripper();
                 this.expectedState = "Opened";
                 this.lastPressed = "a";
+            } else if (gamepad2.y) {
+                robot2024.TurnGripperClose();
+                this.expectedState = "Turned Left";
+                this.lastPressed = "y";
+            } else if (gamepad2.x) {
+                robot2024.TurnGripperOpen();
+                this.expectedState = "Turned Right";
+                this.lastPressed = "x";
+
+
             }
 
             telemetry.addData("Time", this.time);
