@@ -19,8 +19,8 @@ public class TeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            robot2024.setTurnPower(gamepad1.right_stick_x);
-            robot2024.setForwardPower(gamepad1.left_stick_y);
+            robot2024.setTurnPower(-gamepad1.right_stick_x);
+            robot2024.setForwardPower(-gamepad1.left_stick_y);
             robot2024.setStrafePower(gamepad1.left_stick_x);
 
             robot2024.setShoulderPower(gamepad2.left_stick_y);
