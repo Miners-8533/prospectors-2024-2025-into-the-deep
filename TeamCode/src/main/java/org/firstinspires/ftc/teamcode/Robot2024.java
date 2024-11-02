@@ -10,12 +10,15 @@ public class Robot2024 {
     Servo gripperTurn;
     DcMotor Shoulder_Motor;
 
+    DcMotor Elbow_Motor;
     double gripper_close_position = 0.988;
     double gripper_open_position = 0.163;
     double gripper_turn_open = 0.163;
     double gripper_turn_close = 0.988;
     double drivePowerModifier = 0.5;
-    double shoulderModifier = 0.4;
+    double shoulderModifier = 0.25;;
+    double elbowModifier = 0.25;
+
     private DcMotor leftFront;
     private DcMotor rightFront;
     private DcMotor leftBack;
@@ -33,6 +36,11 @@ public class Robot2024 {
         this.Shoulder_Motor = hardwareMap.dcMotor.get("Shoulder_Motor");
         this.Shoulder_Motor.setDirection(DcMotorSimple.Direction.FORWARD);
         this.Shoulder_Motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        this.Elbow_Motor = hardwareMap.dcMotor.get("Elbow_Motor");
+        this.Elbow_Motor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.Elbow_Motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         this.gripper = hardwareMap.servo.get("Gripper_Servo");
         this.gripperTurn = hardwareMap.servo.get("Gripper_Turn");
         leftFront = hardwareMap.dcMotor.get("leftFront");
@@ -62,6 +70,10 @@ public class Robot2024 {
         Shoulder_Motor.setPower(powerLevel * this.shoulderModifier);
     }
 
+    public void setElbowPower(double powerLevel) {
+        Elbow_Motor.setPower(powerLevel * this.elbowModifier);
+    }
+
     public void setStrafePower(double powerLevel) {
         strafePower = powerLevel;
         this.setDrivePowers();
@@ -82,7 +94,6 @@ public class Robot2024 {
         leftFront.setPower((strafePower - forwardPower - turnPower) * drivePowerModifier);
         leftBack.setPower((-strafePower - forwardPower - turnPower) * drivePowerModifier);
         rightBack.setPower((strafePower - forwardPower + turnPower) * drivePowerModifier);
-
     }
 
 }

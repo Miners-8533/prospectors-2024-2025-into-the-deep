@@ -71,8 +71,6 @@ public class GripperCalibration extends LinearOpMode {
                 robot2024.TurnGripperOpen();
                 this.expectedState = "Turned Right";
                 this.lastPressed = "x";
-
-
             }
 
             telemetry.addData("Time", this.time);
@@ -91,7 +89,10 @@ public class GripperCalibration extends LinearOpMode {
                     adjustment += 0.001;
                 }
                 this.debounceTime = this.time;
+
+
             }
+
 
         telemetry.update();
         }
