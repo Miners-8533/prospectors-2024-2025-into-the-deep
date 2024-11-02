@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-
-import java.security.PublicKey;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Robot2024 {
     Servo gripper;
@@ -21,6 +21,8 @@ public class Robot2024 {
     private double strafePower;
     private double forwardPower;
     private double turnPower;
+
+    private ElapsedTime runtime = new ElapsedTime();
 
     public Robot2024(Servo gripper, DcMotor Shoulder_Motor) {
         this.gripper = gripper;
@@ -56,6 +58,37 @@ public class Robot2024 {
 
     public void setStrafePower(double powerLevel) {
         strafePower = powerLevel;
+        this.setDrivePowers();
+    }
+    public void setStrafeRightPower(double powerLevel) {
+        strafePower = powerLevel;
+        this.setDrivePowers();
+    }
+    public void setStrafeLeftPower(double powerLevel) {
+        strafePower = 0 - powerLevel;
+        this.setDrivePowers();
+    }
+
+    public void timedMove(LinearOpMode owner,
+                          double duration,
+                          double strafePower,
+                          double turnPower,
+                          double forwardPower) {
+
+        this.setForwardPower(forwardPower);
+        this.setStrafePower(strafePower);
+        this.setTurnPower(turnPower);
+
+        runtime.reset();
+        while (owner.opModeIsActive() && (runtime.seconds() < duration)) {
+        }
+        this.stopMoving();
+    }
+
+    public void stopMoving() {
+        this.setStrafePower(0);
+        this.setForwardPower(0);
+        this.setTurnPower(0);
         this.setDrivePowers();
     }
 

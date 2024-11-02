@@ -2,11 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="Robot: Auto Drive By Time", group="Robot")
-public class test_auton extends LinearOpMode {
+@Autonomous(name="AutonObservationZone", group="Robot")
+public class AutonObservationZone extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -27,7 +26,8 @@ public class test_auton extends LinearOpMode {
         // Step through each leg of the path, ensuring that the OpMode has not been stopped along the way.
 
         // Step 1:  Drive forward for 3 seconds
-        robot2024.setForwardPower(0.75);
+//        strafe power -#=left/+#=right
+        robot2024.setStrafePower(0.75);
 //        leftDrive.setPower(FORWARD_SPEED);
 //        rightDrive.setPower(FORWARD_SPEED);
         runtime.reset();
@@ -35,15 +35,6 @@ public class test_auton extends LinearOpMode {
             telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
-//Until next curly brace is the code for a stand still 180 degree turn
-        robot2024.setForwardPower(0);
-        robot2024.setTurnPower(0.75);
-//        leftDrive.setPower(FORWARD_SPEED);
-//        rightDrive.setPower(FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.5)) {
-            telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
+
     }
     }
