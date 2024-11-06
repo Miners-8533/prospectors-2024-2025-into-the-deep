@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -21,10 +23,10 @@ public class Robot2024 {
     double shoulderModifier = 0.25;;
     double elbowModifier = 0.25;
 
-    private DcMotor leftFront;
-    private DcMotor rightFront;
-    private DcMotor leftBack;
-    private DcMotor rightBack;
+    DcMotorEx leftFront;
+    DcMotorEx rightFront;
+    DcMotorEx leftBack;
+    DcMotorEx rightBack;
     private double strafePower;
     private double forwardPower;
     private double turnPower;
@@ -47,14 +49,17 @@ public class Robot2024 {
 
         this.gripper = hardwareMap.servo.get("Gripper_Servo");
         this.gripperTurn = hardwareMap.servo.get("Gripper_Turn");
-        leftFront = hardwareMap.dcMotor.get("leftFront");
+        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightFront = hardwareMap.dcMotor.get("rightFront");
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftBack = hardwareMap.dcMotor.get("leftBack");
+        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
         leftBack.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightBack = hardwareMap.dcMotor.get("rightBack");
+        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
         rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        rightBack.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
+                new PIDFCoefficients(1.0, 0.0, 0.0, 0.0));
     }
 
     public void closeGripper(){
@@ -131,4 +136,47 @@ public class Robot2024 {
         rightBack.setPower((strafePower - forwardPower + turnPower) * drivePowerModifier);
     }
 
+    enum Motors {
+        rightFront,
+        leftFront,
+        rightBack,
+        leftBack,
+        shoulder,
+        elbow
+    }
+
+    DcMotorEx getMotor(Motors motor) {
+        DcMotorEx motor_to_update = this.rightFront;
+        if (motor == Motors.rightFront) {
+            motor_to_update = this.rightFront;
+        }
+        else if (motor == Motors.leftFront) {
+            motor_to_update = this.leftFront;
+        }
+        else if (motor == Motors.rightBack) {
+            motor_to_update = this.rightBack;
+        }
+        else if (motor == Motors.leftBack) {
+            motor_to_update = this.leftBack;
+        }
+        return motor_to_update;
+    }
+
+    void setPid(Motors motor, PIDFCoefficients coefficients) {
+        DcMotorEx motor_to_update = this.rightFront;
+        if (motor == Motors.rightFront) {
+            motor_to_update = this.rightFront;
+        }
+        else if (motor == Motors.leftFront) {
+            motor_to_update = this.leftFront;
+        }
+        else if (motor == Motors.rightBack) {
+            motor_to_update = this.rightBack;
+        }
+        else if (motor == Motors.leftBack) {
+            motor_to_update = this.leftBack;
+        }
+
+        motor_to_update.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coefficients);
+    }
 }
