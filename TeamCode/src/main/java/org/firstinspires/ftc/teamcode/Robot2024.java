@@ -181,10 +181,10 @@ public class Robot2024 {
         double rightBackVelocityModifier = 1.0;
         double leftFrontVelocityModifier = 1.5;
         double leftBackVelocityModifier = 1.0;
-        rightFront.setVelocity(-strafeVelocity - forwardVelocity + turnVelocity);
+        rightFront.setVelocity((-strafeVelocity - forwardVelocity + turnVelocity) * rightFrontVelocityModifier);
         leftFront.setVelocity((strafePower - forwardPower - turnPower) * leftFrontVelocityModifier);
-        leftBack.setVelocity(-strafePower - forwardPower - turnPower);
-        rightBack.setVelocity(strafePower - forwardPower + turnPower);
+        leftBack.setVelocity((-strafePower - forwardPower - turnPower) * leftBackVelocityModifier);
+        rightBack.setVelocity((strafePower - forwardPower + turnPower) * rightBackVelocityModifier);
     }
 
     enum Motors {
