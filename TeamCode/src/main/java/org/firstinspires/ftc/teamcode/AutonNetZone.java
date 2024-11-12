@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="AutonNetZone", group="Robot")
+@Autonomous(group="Robot")
 public class AutonNetZone extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();

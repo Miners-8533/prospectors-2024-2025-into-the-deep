@@ -30,6 +30,9 @@ public class Robot2024 {
     private double strafePower;
     private double forwardPower;
     private double turnPower;
+    private double strafeVelocity;
+    private double forwardVelocity;
+    private double turnVelocity;
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -59,7 +62,13 @@ public class Robot2024 {
         rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
         rightBack.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
-                new PIDFCoefficients(1.0, 0.0, 0.0, 0.0));
+                new PIDFCoefficients(20.0, 0.0, 0.0, 0.0));
+        rightFront.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
+                new PIDFCoefficients(20.0, 0.0, 0.0, 0.0));
+        leftBack.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
+                new PIDFCoefficients(20.0, 0.0, 0.0, 0.0));
+        leftFront.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
+                new PIDFCoefficients(20.0, 0.0, 0.0, 0.0));
     }
 
     public void closeGripper(){
@@ -112,6 +121,22 @@ public class Robot2024 {
         this.stopMoving();
     }
 
+    public void timedVelocityMove(LinearOpMode owner,
+                          double duration,
+                          double strafeVelocity,
+                          double turnVelocity,
+                          double forwardVelocity) {
+
+        this.setForwardVelocity(forwardVelocity);
+        this.setStrafeVelocity(strafeVelocity);
+        this.setTurnVelocity(turnVelocity);
+
+        runtime.reset();
+        while (owner.opModeIsActive() && (runtime.seconds() < duration)) {
+        }
+        this.stopMoving();
+    }
+
     public void stopMoving() {
         this.setStrafePower(0);
         this.setForwardPower(0);
@@ -134,6 +159,32 @@ public class Robot2024 {
         leftFront.setPower((strafePower - forwardPower - turnPower) * drivePowerModifier);
         leftBack.setPower((-strafePower - forwardPower - turnPower) * drivePowerModifier);
         rightBack.setPower((strafePower - forwardPower + turnPower) * drivePowerModifier);
+    }
+
+    public void setStrafeVelocity(double velocity) {
+        strafePower = velocity;
+        this.setDriveVelocities();
+    }
+
+    public void setForwardVelocity(double velocity) {
+        forwardPower = velocity;
+        this.setDriveVelocities();
+    }
+
+    public void setTurnVelocity(double velocity) {
+        turnPower = velocity;
+        this.setDriveVelocities();
+    }
+
+    private void setDriveVelocities() {
+        double rightFrontVelocityModifier = 1.0;
+        double rightBackVelocityModifier = 1.0;
+        double leftFrontVelocityModifier = 1.5;
+        double leftBackVelocityModifier = 1.0;
+        rightFront.setVelocity(-strafeVelocity - forwardVelocity + turnVelocity);
+        leftFront.setVelocity((strafePower - forwardPower - turnPower) * leftFrontVelocityModifier);
+        leftBack.setVelocity(-strafePower - forwardPower - turnPower);
+        rightBack.setVelocity(strafePower - forwardPower + turnPower);
     }
 
     enum Motors {

@@ -89,8 +89,6 @@ public class GripperCalibration extends LinearOpMode {
                     adjustment += 0.001;
                 }
                 this.debounceTime = this.time;
-
-
             }
 
 
