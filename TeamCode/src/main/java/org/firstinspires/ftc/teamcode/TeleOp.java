@@ -23,8 +23,8 @@ public class TeleOp extends LinearOpMode {
             robot2024.setForwardPower(-gamepad1.left_stick_y);
             robot2024.setStrafePower(gamepad1.left_stick_x);
 
-            robot2024.setShoulderPower(gamepad2.left_stick_y);
-            robot2024.setElbowPower(gamepad2.right_stick_y);
+            robot2024.setShoulderPower(gamepad2.left_stick_y * 1500);
+            robot2024.setElbowPower(gamepad2.right_stick_y * 1000);
 
             if (gamepad2.b) {
                 robot2024.closeGripper();
@@ -36,10 +36,21 @@ public class TeleOp extends LinearOpMode {
                 robot2024.TurnGripperOpen();
             }
 
+            if (gamepad2.dpad_up){
+
+                robot2024.Elbow_Motor.setTargetPosition(100);
+            } else if (gamepad2.dpad_down){
+                robot2024.Elbow_Motor.setTargetPosition(40);
+            }
+
 //        telemetry.addData("Servo Position", servoTest.getPosition());
 //        telemetry.addData("Target Power", tgtPower);
-//        telemetry.addData("Status", "Running");
-//        telemetry.update();
+        telemetry.addData("Elbow Posn", robot2024.Elbow_Motor.getCurrentPosition());
+        telemetry.addData("shoulder Posn", robot2024.Shoulder_Motor.getCurrentPosition());
+        telemetry.addData("Elbow Posn", robot2024.Elbow_Motor.getTargetPosition());
+        telemetry.addData("shoulder Posn", robot2024.Shoulder_Motor.getTargetPosition());
+//        robot2024.Shoulder_Motor.getTargetPosition();
+        telemetry.update();
         }
 
     }

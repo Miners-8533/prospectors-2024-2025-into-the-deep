@@ -12,9 +12,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Robot2024 {
     Servo gripper;
     Servo gripperTurn;
-    DcMotor Shoulder_Motor;
+    DcMotorEx Shoulder_Motor;
 
-    DcMotor Elbow_Motor;
+    DcMotorEx Elbow_Motor;
     double gripper_close_position = 0.988;
     double gripper_open_position = 0.163;
     double gripper_turn_open = 0.163;
@@ -38,18 +38,29 @@ public class Robot2024 {
 
     public Robot2024(Servo gripper, DcMotor Shoulder_Motor) {
         this.gripper = gripper;
-        this.Shoulder_Motor = Shoulder_Motor;
     }
 
     public Robot2024(HardwareMap hardwareMap) {
-        this.Shoulder_Motor = hardwareMap.dcMotor.get("Shoulder_Motor");
-        this.Shoulder_Motor.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.Shoulder_Motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Shoulder_Motor = hardwareMap.get(DcMotorEx.class, "Shoulder_Motor");
+        Shoulder_Motor.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        this.Elbow_Motor = hardwareMap.dcMotor.get("Elbow_Motor");
-        this.Elbow_Motor.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.Elbow_Motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        Shoulder_Motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
+//                new PIDFCoefficients(30.0, 0.0, 0.0, 0.0));
+        Shoulder_Motor.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION,
+                new PIDFCoefficients(30.0, 0.0, 0.0, 0.0));
+        Shoulder_Motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+
+        Elbow_Motor = hardwareMap.get(DcMotorEx.class, "Elbow_Motor");
+        Elbow_Motor.setDirection(DcMotorSimple.Direction.FORWARD);
+
+//        Elbow_Motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
+//                new PIDFCoefficients(30.0, 0.0, 0.0, 0.0));
+        Elbow_Motor.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION,
+                new PIDFCoefficients(30.0, 0.0, 0.0, 0.0));
+        Elbow_Motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        
         this.gripper = hardwareMap.servo.get("Gripper_Servo");
         this.gripperTurn = hardwareMap.servo.get("Gripper_Turn");
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
@@ -85,11 +96,13 @@ public class Robot2024 {
     }
 
     public void setShoulderPower(double powerLevel){
-        Shoulder_Motor.setPower(powerLevel * this.shoulderModifier);
+//        Shoulder_Motor.setPower(powerLevel * this.shoulderModifier);
+        Shoulder_Motor.setVelocity(powerLevel * this.shoulderModifier);
     }
 
     public void setElbowPower(double powerLevel) {
-        Elbow_Motor.setPower(powerLevel * this.elbowModifier);
+//        Elbow_Motor.setPower(powerLevel * this.elbowModifier);
+        Elbow_Motor.setVelocity(powerLevel * this.elbowModifier);
     }
 
     public void setStrafePower(double powerLevel) {
